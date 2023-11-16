@@ -31,6 +31,7 @@ COPY package.json ./
 ENV NATS_SERVER=localhost:4222
 ENV NATS_SUBJECT=Lumberjack
 ENV ELASTIC_SEARCH_VERSION=
+ENV ELASTIC_HOST=
 
 # Set healthcheck command
 HEALTHCHECK --interval=60s CMD [ -e /tmp/.lock ] || exit 1

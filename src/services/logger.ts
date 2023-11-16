@@ -1,10 +1,11 @@
 import pino from 'pino'
 import pinoElastic from 'pino-elasticsearch'
+import { elasticHost, elasticVersion } from '../config/server'
 
 const streamToElastic = pinoElastic({
-  index: 'an-index',
-  node: 'http://localhost:9200',
-  esVersion: 8.11,
+  index: 'pino',
+  node: elasticHost,
+  esVersion: elasticVersion,
   flushBytes: 1000
 })
 
