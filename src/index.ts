@@ -24,9 +24,9 @@ const messageConstructor = (message: Omit<LogMessage, 'level'>): string => {
   console.log(`subscribed to ${subject}`);
 
   for await (const m of subscription) {
-    console.log('received message');
-    const { message, level, channel } = jc.decode(m.data) as LogMessage;
-    console.log(`level: ${level}`);
+    console.log('received message', m.data);
+    logger.info(m.data);
+    /* const { message, level, channel } = jc.decode(m.data) as LogMessage;
     switch (level) {
       case "fatal":
         logger.info(messageConstructor({ message, channel }))
@@ -42,7 +42,7 @@ const messageConstructor = (message: Omit<LogMessage, 'level'>): string => {
         break;
       default:
         logger.info(messageConstructor({ message, channel }))
-    }
+    } */
   }
 })();
 
