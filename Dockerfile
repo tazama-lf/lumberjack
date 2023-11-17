@@ -1,5 +1,6 @@
 ARG BUILD_IMAGE=node:20-bullseye
-ARG RUN_IMAGE=gcr.io/distroless/nodejs20-debian11:nonroot
+#ARG RUN_IMAGE=gcr.io/distroless/nodejs20-debian11:nonroot
+ARG RUN_IMAGE=node:21-alpine
 
 FROM ${BUILD_IMAGE} AS builder
 LABEL stage=build
@@ -21,7 +22,7 @@ COPY package*.json ./
 RUN npm ci --omit=dev --ignore-scripts
 
 FROM ${RUN_IMAGE} AS run-env
-USER nonroot
+#USER nonroot
 
 WORKDIR /home/app
 COPY --from=dep-resolver /node_modules ./node_modules

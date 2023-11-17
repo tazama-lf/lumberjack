@@ -8,13 +8,12 @@ const jc = JSONCodec();
 
 type LogMessage = {
   message: string,
-  level: number,
-  level_name: "fatal" | "error" | "warn" | "info" | "debug" | "trace",
+  level: "fatal" | "error" | "warn" | "info" | "debug" | "trace",
   channel: string,
 }
 
-const messageConstructor = (message: Omit<LogMessage, 'level' | 'level_name'>): string => {
-  return `[${message.channel}]:${message.message}`
+const messageConstructor = (message: Omit<LogMessage, 'level'>): string => {
+  return `${message.channel}:${message.message}`
 }
 
 (async () => {
@@ -24,9 +23,9 @@ const messageConstructor = (message: Omit<LogMessage, 'level' | 'level_name'>): 
   logger.trace(`subscribed to ${subject}`);
 
   for await (const m of subscription) {
-    const { message, level, level_name, channel } = jc.decode(m.data) as LogMessage;
+    const { message, level, channel } = jc.decode(m.data) as LogMessage;
     console.log(`received message at level: ${level}`);
-    switch (level_name) {
+    switch (level) {
       case "fatal":
         logger.info(messageConstructor({ message, channel }))
         break;
