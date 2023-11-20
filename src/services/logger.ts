@@ -9,6 +9,8 @@ const streamToElastic = pinoElastic({
   flushBytes: 1000
 })
 
+streamToElastic.on('<event>', (error) => console.log(event));
+
 const streams = [
   {
     stream: process.stdout,
