@@ -1,14 +1,19 @@
 import pino from 'pino'
 import pinoElastic from 'pino-elasticsearch'
-import { elasticHost, elasticVersion } from '../config/server'
+import { elasticHost, elasticPassword, elasticThumb, elasticUsername, elasticVersion } from '../config/server'
 
 const streamToElastic = pinoElastic({
   index: 'pino',
   node: elasticHost,
   esVersion: elasticVersion,
-  tls: {
-    rejectUnauthorized: false
+  auth: {
+    username: elasticUsername!,
+    password: elasticPassword!,
   },
+  tls: {
+    rejectUnauthorized: false,
+  },
+  caFingerprint: elasticThumb,
   flushBytes: 1000
 })
 
