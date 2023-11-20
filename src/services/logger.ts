@@ -8,6 +8,10 @@ const streamToElastic = pinoElastic({
   esVersion: elasticVersion,
   flushBytes: 1000
 })
+var streams = [
+  { stream: streamToElastic, level: 'trace' },
+  { stream: process.stdout, level: 'trace' },
+]
 
-export const logger = pino({ level: 'trace' }, streamToElastic)
+export const logger = pino(pino.multistream(streams))
 //export const logger = pino({ level: 'info' }, process.stdout)
