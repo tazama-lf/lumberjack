@@ -11,7 +11,7 @@ const streamToElastic = pinoElastic({
     password: elasticPassword,
   },
   tls: {
-    ca: './ca.crt',
+    ca: '/usr/share/lumberjack/config/certs/ca.crt',
     rejectUnauthorized: false,
   },
   // caFingerprint: elasticThumb,
