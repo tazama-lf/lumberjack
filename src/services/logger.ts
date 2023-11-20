@@ -9,6 +9,16 @@ const streamToElastic = pinoElastic({
   flushBytes: 1000
 })
 
-export const logger = pino({ level: 'trace' }, streamToElastic)
-//export const logger = pino(pino.multistream(streams))
+const streams = [
+  {
+    stream: process.stdout,
+    level: 'trace'
+  },
+  {
+    level: 'trace', stream: streamToElastic
+  }
+]
+
+//export const logger = pino({ level: 'trace' }, streamToElastic)
+export const logger = pino(pino.multistream(streams))
 //export const logger = pino({ level: 'info' }, process.stdout)
