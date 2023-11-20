@@ -3,6 +3,7 @@ import { natsConnection } from "./services/nats.js"
 import { logger } from "./services/logger.js";
 import { subject } from './config/server.js';
 import { JSONCodec } from 'nats';
+import { Logger } from 'pino';
 
 const jc = JSONCodec();
 
@@ -12,8 +13,9 @@ type LogMessage = {
   channel: string,
 }
 
-const messageConstructor = (message: Omit<LogMessage, 'level'>): string => {
-  return `${message.channel}:${message.message}`
+const attachChannel = (channel: string, logger: Logger<{ level: 'trace' }>) => {
+  const child = logger.child({ channel })
+  return child
 }
 
 (async () => {
@@ -24,23 +26,23 @@ const messageConstructor = (message: Omit<LogMessage, 'level'>): string => {
 
   for await (const m of subscription) {
     const { message, level, channel } = jc.decode(m.data) as LogMessage;
-    const msg = messageConstructor({ message, channel });
-    console.log('message', msg);
+    const log = attachChannel(channel, logger);
+    console.log('message', message);
     switch (level) {
       case "fatal":
-        logger.info(msg)
+        log.info(message)
         break;
       case "trace":
-        logger.trace(msg)
+        log.trace(message)
         break;
       case "debug":
-        logger.debug(msg)
+        log.debug(message)
         break;
       case "error":
-        logger.error(msg)
+        log.error(message)
         break;
       default:
-        logger.info(msg)
+        log.info(message)
     }
   }
 })();
