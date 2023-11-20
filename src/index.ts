@@ -21,10 +21,12 @@ const messageConstructor = (message: Omit<LogMessage, 'level'>): string => {
 
   const subscription = nats.subscribe(subject);
   logger.info(`subscribed to ${subject}`);
+  logger.trace(`subscribed to ${subject}`);
 
   for await (const m of subscription) {
     let message = jc.decode(m.data) as LogMessage;
     logger.info(message);
+    logger.trace(message);
     /* const { message, level, channel } = jc.decode(m.data) as LogMessage;
     switch (level) {
       case "fatal":
