@@ -6,6 +6,9 @@ const streamToElastic = pinoElastic({
   index: 'pino',
   node: elasticHost,
   esVersion: elasticVersion,
+  tls: {
+    rejectUnauthorized: false
+  },
   flushBytes: 1000
 })
 
