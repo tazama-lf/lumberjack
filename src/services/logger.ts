@@ -7,13 +7,14 @@ const streamToElastic = pinoElastic({
   node: elasticHost,
   esVersion: elasticVersion,
   auth: {
-    username: elasticUsername!,
-    password: elasticPassword!,
+    username: elasticUsername,
+    password: elasticPassword,
   },
   tls: {
+    ca: './ca.crt',
     rejectUnauthorized: false,
   },
-  caFingerprint: elasticThumb,
+  // caFingerprint: elasticThumb,
   flushBytes: 1000
 })
 
