@@ -21,6 +21,6 @@
     "dotenv": "^16.3.1",
     "nats": "^2.18.0",
     "pino": "^8.16.1",
-    "pino-elasticsearch": "^7.0.0"
+    "pino-elasticsearch": "^6.7.0"
   }
 }
