@@ -32,7 +32,7 @@ const messageConstructor = (message: Omit<LogMessage, 'level'>): string => {
         break;
       case "trace":
         console.log(level, msg);
-        logger.trace(msg)
+        logger.info(msg)
         break;
       case "debug":
         console.log(level, msg);
