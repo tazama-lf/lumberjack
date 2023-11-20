@@ -9,7 +9,10 @@ const streamToElastic = pinoElastic({
   flushBytes: 1000
 })
 
-streamToElastic.on('<event>', (error) => console.log(error));
+streamToElastic.on('unknown', (error) => console.log(event));
+streamToElastic.on('insertError', (error) => console.log(event));
+streamToElastic.on('insert', (error) => console.log(event));
+streamToElastic.on('error', (error) => console.log(event));
 
 const streams = [
   {
