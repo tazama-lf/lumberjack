@@ -1,30 +1,29 @@
 import pino from 'pino'
 import pinoElastic from 'pino-elasticsearch'
-import { elasticHost, elasticPassword, elasticThumb, elasticUsername, elasticVersion } from '../config/server'
+import { elasticHost, elasticPassword, elasticPort, elasticThumb, elasticUsername, elasticVersion } from '../config/server'
+import { ecsFormat } from '@elastic/ecs-pino-format'
 
-const streamToElastic = pinoElastic({
-  index: 'pino',
-  node: elasticHost,
-  esVersion: elasticVersion,
-  auth: {
-    username: elasticUsername,
-    password: elasticPassword,
-  },
-  opType: 'create',
-  /* tls: {
-      ca: '/usr/share/lumberjack/config/certs/ca.crt',
-    rejectUnauthorized: false,
-  }, */
-  // caFingerprint: elasticThumb,
-  flushBytes: 1000
-})
+const logstash = pino.transport(
+  {
+    target: 'pino-socket',
+    options: {
+      address: elasticHost,
+      port: elasticPort,
+      mode: 'tcp'
+    },
+  }
+)
 
-streamToElastic.on('unknown', (error) => console.log('unknown err', error));
+/* streamToElastic.on('unknown', (error) => console.log('unknown err', error));
 streamToElastic.on('insertError', (error) => console.log('insert err', error));
 streamToElastic.on('insert', (error) => console.log('insert exc', error));
-streamToElastic.on('error', (error) => console.log('error', error));
+streamToElastic.on('error', (error) => console.log('error', error)); */
 
-const streams = [
+logstash.on('socketError', () => console.log('logstash socket err'));
+logstash.on('socketClose', () => console.log('logstash socket close'));
+logstash.on('open', () => console.log('logstash socket opened'));
+
+/* const streams = [
   {
     stream: process.stdout,
     level: 'trace'
@@ -32,8 +31,8 @@ const streams = [
   {
     level: 'trace', stream: streamToElastic
   }
-]
+] */
 
-export const logger = pino({ level: 'trace' }, streamToElastic)
+export const logger = pino({ level: 'trace' }, logstash)
 // export const logger = pino(pino.multistream(streams))
 //export const logger = pino({ level: 'info' }, process.stdout)

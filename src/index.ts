@@ -48,4 +48,3 @@ const messageConstructor = (message: Omit<LogMessage, 'level'>): string => {
     }
   }
 })();
-
