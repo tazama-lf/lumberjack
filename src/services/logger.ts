@@ -10,6 +10,7 @@ const streamToElastic = pinoElastic({
     username: elasticUsername,
     password: elasticPassword,
   },
+  opType: 'create',
   /* tls: {
       ca: '/usr/share/lumberjack/config/certs/ca.crt',
     rejectUnauthorized: false,
@@ -18,10 +19,10 @@ const streamToElastic = pinoElastic({
   flushBytes: 1000
 })
 
-streamToElastic.on('unknown', (error) => console.log(error));
-streamToElastic.on('insertError', (error) => console.log(error));
-streamToElastic.on('insert', (error) => console.log(error));
-streamToElastic.on('error', (error) => console.log(error));
+streamToElastic.on('unknown', (error) => console.log('unknown err', error));
+streamToElastic.on('insertError', (error) => console.log('insert err', error));
+streamToElastic.on('insert', (error) => console.log('insert exc', error));
+streamToElastic.on('error', (error) => console.log('error', error));
 
 const streams = [
   {
