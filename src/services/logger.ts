@@ -49,6 +49,6 @@ logstash.on('open', () => console.log('logstash socket opened')); */
   }
 ] */
 
-export const logger = pino(ecsFormat(), streamToElastic)
+export const logger = pino({ level: 'trace', ...ecsFormat }, streamToElastic)
 // export const logger = pino(pino.multistream(streams))
 //export const logger = pino({ level: 'info' }, process.stdout)
