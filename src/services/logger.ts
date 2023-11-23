@@ -22,7 +22,6 @@ const streamToElastic = pinoElastic({
     username: elasticUsername,
     password: elasticPassword,
   },
-  opType: 'create',
   /* tls: {
       ca: '/usr/share/lumberjack/config/certs/ca.crt',
     rejectUnauthorized: false,
