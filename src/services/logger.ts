@@ -9,19 +9,36 @@ const logstash = pino.transport(
     options: {
       address: elasticHost,
       port: elasticPort,
-      mode: 'tcp'
+      mode: 'tcp',
     },
   }
 )
 
-/* streamToElastic.on('unknown', (error) => console.log('unknown err', error));
+
+const streamToElastic = pinoElastic({
+  node: elasticHost,
+  esVersion: elasticVersion,
+  auth: {
+    username: elasticUsername,
+    password: elasticPassword,
+  },
+  opType: 'create',
+  /* tls: {
+      ca: '/usr/share/lumberjack/config/certs/ca.crt',
+    rejectUnauthorized: false,
+  }, */
+  // caFingerprint: elasticThumb,
+  flushBytes: 1,
+})
+
+streamToElastic.on('unknown', (error) => console.log('unknown err', error));
 streamToElastic.on('insertError', (error) => console.log('insert err', error));
 streamToElastic.on('insert', (error) => console.log('insert exc', error));
-streamToElastic.on('error', (error) => console.log('error', error)); */
+streamToElastic.on('error', (error) => console.log('error', error));
 
-logstash.on('socketError', () => console.log('logstash socket err'));
+/* logstash.on('socketError', () => console.log('logstash socket err'));
 logstash.on('socketClose', () => console.log('logstash socket close'));
-logstash.on('open', () => console.log('logstash socket opened'));
+logstash.on('open', () => console.log('logstash socket opened')); */
 
 /* const streams = [
   {
@@ -33,6 +50,6 @@ logstash.on('open', () => console.log('logstash socket opened'));
   }
 ] */
 
-export const logger = pino({ level: 'trace' }, logstash)
+export const logger = pino({ level: 'trace' }, streamToElastic)
 // export const logger = pino(pino.multistream(streams))
 //export const logger = pino({ level: 'info' }, process.stdout)
