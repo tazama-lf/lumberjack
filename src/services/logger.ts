@@ -1,6 +1,6 @@
 import pino from 'pino'
 import pinoElastic from 'pino-elasticsearch'
-import { elasticHost, elasticPassword, elasticPort, elasticThumb, elasticUsername, elasticVersion } from '../config/server'
+import { elasticHost, elasticIndex, elasticPassword, elasticPort, elasticThumb, elasticUsername, elasticVersion } from '../config/server'
 import { ecsFormat } from '@elastic/ecs-pino-format'
 
 const logstash = pino.transport(
@@ -16,6 +16,7 @@ const logstash = pino.transport(
 
 
 const streamToElastic = pinoElastic({
+  index: elasticIndex,
   node: elasticHost,
   esVersion: elasticVersion,
   auth: {
