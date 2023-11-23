@@ -32,8 +32,8 @@ let ecsOpts = ecsFormat();
 
 const streams = [
   {
-    stream: process.stdout,
     level: 'trace',
+    stream: process.stdout,
     ...ecsOpts,
   },
   {
