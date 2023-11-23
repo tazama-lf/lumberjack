@@ -25,26 +25,27 @@ const messageConstructor = (message: Omit<LogMessage, 'level'>): string => {
   for await (const m of subscription) {
     const { message, level, channel } = jc.decode(m.data) as LogMessage;
     const msg = messageConstructor({ message, channel });
+    let child = logger.child({ channel, level });
     switch (level) {
       case "fatal":
         console.log(level, msg);
-        logger.info(msg)
+        child.info(msg)
         break;
       case "trace":
         console.log(level, msg);
-        logger.info(msg)
+        child.info(msg)
         break;
       case "debug":
         console.log(level, msg);
-        logger.debug(msg)
+        child.debug(msg)
         break;
       case "error":
         console.log(level, msg);
-        logger.error(msg)
+        child.error(msg)
         break;
       default:
         console.log(level, msg);
-        logger.info(msg)
+        child.info(msg)
     }
   }
 })();
