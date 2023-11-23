@@ -3,18 +3,6 @@ import pinoElastic from 'pino-elasticsearch'
 import { elasticHost, elasticIndex, elasticPassword, elasticPort, elasticThumb, elasticUsername, elasticVersion } from '../config/server'
 import { ecsFormat } from '@elastic/ecs-pino-format'
 
-const logstash = pino.transport(
-  {
-    target: 'pino-socket',
-    options: {
-      address: elasticHost,
-      port: elasticPort,
-      mode: 'tcp',
-    },
-  }
-)
-
-
 const streamToElastic = pinoElastic({
   index: elasticIndex,
   node: elasticHost,
@@ -40,17 +28,21 @@ streamToElastic.on('error', (error) => console.log('error', error));
 logstash.on('socketClose', () => console.log('logstash socket close'));
 logstash.on('open', () => console.log('logstash socket opened')); */
 
-/* const streams = [
+let ecsOpts = ecsFormat();
+
+const streams = [
   {
     stream: process.stdout,
-    level: 'trace'
+    level: 'trace',
+    ...ecsOpts,
   },
   {
-    level: 'trace', stream: streamToElastic
+    level: 'trace',
+    stream: streamToElastic,
+    ...ecsOpts
   }
-] */
+]
 
-let ecsOpts = ecsFormat();
-export const logger = pino({ level: 'trace', ...ecsOpts }, streamToElastic)
-// export const logger = pino(pino.multistream(streams))
+//export const logger = pino({ level: 'trace', ...ecsOpts }, streamToElastic)
+export const logger = pino(pino.multistream(streams))
 //export const logger = pino({ level: 'info' }, process.stdout)
