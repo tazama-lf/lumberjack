@@ -22,7 +22,7 @@ const streams = [
     ...ecsOpts,
   },
   {
-    level: 'trace',
+    level: 'info',
     stream,
     ...ecsOpts
   }
