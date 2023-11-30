@@ -13,23 +13,22 @@ import { decodeLogBuffer } from '@frmscoe/frms-coe-lib/lib/helpers/protobuf.js'
   for await (const m of subscription) {
     const logMessage = decodeLogBuffer(m.data as Buffer);
     if (logMessage) {
-      const { message, level, channel } = logMessage;
-      let child = logger.child({ channel, level });
+      const { level } = logMessage;
       switch (level) {
         case "fatal":
-          child.info(message)
+          logger.fatal(logMessage)
           break;
         case "trace":
-          child.info(message)
+          logger.trace(logMessage)
           break;
         case "debug":
-          child.debug(message)
+          logger.debug(logMessage)
           break;
         case "error":
-          child.error(message)
+          logger.error(logMessage)
           break;
         default:
-          child.info(message)
+          logger.info(logMessage)
       }
     }
   }
