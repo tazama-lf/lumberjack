@@ -1,34 +1,19 @@
 import pino from 'pino'
-import pinoElastic from 'pino-elasticsearch'
-import { elasticHost, elasticIndex, elasticPassword, elasticPort, elasticThumb, elasticUsername, elasticVersion } from '../config/server'
-import { ecsFormat } from '@elastic/ecs-pino-format'
+import { elasticHost, elasticPassword, elasticUsername, elasticVersion } from '../config/server'
+import { createElasticStream } from '@frmscoe/frms-coe-lib/lib/services/logger'
 
-const streamToElastic = pinoElastic({
-  index: elasticIndex,
-  node: elasticHost,
-  esVersion: elasticVersion,
-  auth: {
-    username: elasticUsername,
-    password: elasticPassword,
-  },
-  /* tls: {
-      ca: '/usr/share/lumberjack/config/certs/ca.crt',
-    rejectUnauthorized: false,
-  }, */
-  // caFingerprint: elasticThumb,
-  flushBytes: 1,
-})
+const { ecsOpts, stream } = createElasticStream(elasticHost, elasticVersion, elasticUsername, elasticPassword, 1000);
 
-streamToElastic.on('unknown', (error) => console.log('unknown err', error));
-streamToElastic.on('insertError', (error) => console.log('insert err', error));
-streamToElastic.on('insert', (error) => console.log('insert exc', error));
-streamToElastic.on('error', (error) => console.log('error', error));
+
+stream.on('unknown', (error) => console.log('unknown err', error));
+stream.on('insertError', (error) => console.log('insert err', error));
+stream.on('insert', (error) => console.log('insert exc', error));
+stream.on('error', (error) => console.log('error', error));
 
 /* logstash.on('socketError', () => console.log('logstash socket err'));
 logstash.on('socketClose', () => console.log('logstash socket close'));
 logstash.on('open', () => console.log('logstash socket opened')); */
 
-let ecsOpts = ecsFormat();
 
 const streams = [
   {
@@ -38,7 +23,7 @@ const streams = [
   },
   {
     level: 'trace',
-    stream: streamToElastic,
+    stream,
     ...ecsOpts
   }
 ]
