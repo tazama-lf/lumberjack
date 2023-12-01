@@ -28,6 +28,6 @@ const streams = [
   }
 ]
 
-//export const logger = pino({ level: 'trace', ...ecsOpts }, streamToElastic)
-export const logger = pino(pino.multistream(streams))
+export const logger = pino({ level: 'trace', ...ecsOpts }, stream)
+//export const logger = pino(pino.multistream(streams))
 //export const logger = pino({ level: 'info' }, process.stdout)
