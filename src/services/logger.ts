@@ -1,6 +1,6 @@
 import pino from 'pino'
 import { elasticHost, elasticPassword, elasticUsername, elasticVersion } from '../config/server'
-import { createElasticStream } from '@frmscoe/frms-coe-lib/lib/services/logger'
+import { createElasticStream } from '@frmscoe/frms-coe-lib/lib/helpers/logUtilities'
 
 const { ecsOpts, stream } = createElasticStream(elasticHost, elasticVersion, elasticUsername, elasticPassword, 1000);
 
