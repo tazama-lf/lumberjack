@@ -10,18 +10,20 @@ stream.on('insertError', (error) => console.log('insert err', error));
 stream.on('insert', (error) => console.log('insert exc', error));
 stream.on('error', (error) => console.log('error', error));
 
-// NOTE: For multistream setups
-/* const streams = [
+
+const streams = [
   {
     level: 'trace',
     stream: process.stdout,
     ...ecsOpts,
   },
   {
-    level: 'info',
+    level: 'trace',
     stream,
     ...ecsOpts
   }
 ]
-*/
-export const logger = pino({ level: 'trace', ...ecsOpts }, stream)
+
+//export const logger = pino({ level: 'trace', ...ecsOpts }, stream)
+export const logger = pino(pino.multistream(streams))
+//export const logger = pino({ level: 'info' }, process.stdout)

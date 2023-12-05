@@ -1,6 +1,6 @@
 ARG BUILD_IMAGE=node:20-bullseye
-#ARG RUN_IMAGE=gcr.io/distroless/nodejs20-debian11:nonroot
-ARG RUN_IMAGE=node:21-alpine
+ARG RUN_IMAGE=gcr.io/distroless/nodejs20-debian11:nonroot
+#ARG RUN_IMAGE=node:21-alpine
 
 FROM ${BUILD_IMAGE} AS builder
 LABEL stage=build
@@ -22,7 +22,7 @@ COPY package*.json ./
 RUN npm ci --omit=dev --ignore-scripts
 
 FROM ${RUN_IMAGE} AS run-env
-#USER nonroot
+USER nonroot
 
 WORKDIR /home/app
 COPY --from=dep-resolver /node_modules ./node_modules
@@ -33,11 +33,8 @@ ENV NATS_SERVER=localhost:4222
 ENV NATS_SUBJECT=Lumberjack
 ENV ELASTIC_USERNAME=
 ENV ELASTIC_PASSWORD=
-ENV ELASTIC_PORT=9200
-ENV ELASTIC_THUMB=
 ENV ELASTIC_SEARCH_VERSION=
 ENV ELASTIC_HOST=
-ENV ELASTIC_INDEX=
 
 # Set healthcheck command
 HEALTHCHECK --interval=60s CMD [ -e /tmp/.lock ] || exit 1
