@@ -2,48 +2,34 @@ import 'dotenv/config'
 import { natsConnection } from "./services/nats.js"
 import { logger } from "./services/logger.js";
 import { subject } from './config/server.js';
-import { JSONCodec } from 'nats';
-
-const jc = JSONCodec();
-
-type LogMessage = {
-  message: string,
-  level: "fatal" | "error" | "warn" | "info" | "debug" | "trace",
-  channel: string,
-}
-
-const messageConstructor = (message: Omit<LogMessage, 'level'>): string => {
-  return `${message.channel}:${message.message}`
-}
+import { decodeLogBuffer } from '@frmscoe/frms-coe-lib/lib/helpers/protobuf.js'
 
 (async () => {
   const nats = await natsConnection;
 
   const subscription = nats.subscribe(subject);
-  logger.trace(`subscribed to ${subject}`);
-  console.log(`subscribed to ${subject}`);
+  logger.info({ message: `subscribed to ${subject}` });
 
   for await (const m of subscription) {
-    let message = jc.decode(m.data);
-    console.log('received message', message);
-    logger.info(message);
-    /* const { message, level, channel } = jc.decode(m.data) as LogMessage;
-    switch (level) {
-      case "fatal":
-        logger.info(messageConstructor({ message, channel }))
-        break;
-      case "trace":
-        logger.trace(messageConstructor({ message, channel }))
-        break;
-      case "debug":
-        logger.debug(messageConstructor({ message, channel }))
-        break;
-      case "error":
-        logger.error(messageConstructor({ message, channel }))
-        break;
-      default:
-        logger.info(messageConstructor({ message, channel }))
-    } */
+    const logMessage = decodeLogBuffer(m.data as Buffer);
+    if (logMessage) {
+      const { level } = logMessage;
+      switch (level) {
+        case "fatal":
+          logger.fatal(logMessage)
+          break;
+        case "trace":
+          logger.trace(logMessage)
+          break;
+        case "debug":
+          logger.debug(logMessage)
+          break;
+        case "error":
+          logger.error(logMessage)
+          break;
+        default:
+          logger.info(logMessage)
+      }
+    }
   }
 })();
-
