@@ -1,8 +1,8 @@
 import pino from 'pino'
-import { elasticHost, elasticPassword, elasticUsername, elasticVersion } from '../config/server'
+import { elasticHost, elasticPassword, elasticUsername, elasticVersion, flushBytes } from '../config/server'
 import { createElasticStream } from '@frmscoe/frms-coe-lib/lib/helpers/logUtilities'
 
-const { ecsOpts, stream } = createElasticStream(elasticHost, elasticVersion, elasticUsername, elasticPassword, 1000);
+const { ecsOpts, stream } = createElasticStream(elasticHost, elasticVersion, elasticUsername, elasticPassword, flushBytes);
 
 
 stream.on('unknown', (error) => console.log('unknown err', error));
