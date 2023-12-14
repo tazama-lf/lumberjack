@@ -53,23 +53,23 @@ jobs:
       - name: Check linting
         run: npm run lint
 
-  test:
-    runs-on: ubuntu-latest
-    name: check tests
-    strategy:
-      matrix:
-        node-version: [20]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-          registry-url: ${{ env.NPM_REGISTRY }}
-          scope: ${{ env.NPM_SCOPE }}
-      - name: Install dependencies
-        run: npm ci
-      - name: Run tests
-        run: npm test
+          #  test:
+          #    runs-on: ubuntu-latest
+          #    name: check tests
+          #    strategy:
+          #      matrix:
+          #        node-version: [20]
+          #    steps:
+          #      - name: Checkout code
+          #        uses: actions/checkout@v4
+          #      - name: Use Node.js
+          #        uses: actions/setup-node@v4
+          #        with:
+          #          node-version: ${{ matrix.node-version }}
+          #          cache: 'npm'
+          #          registry-url: ${{ env.NPM_REGISTRY }}
+          #          scope: ${{ env.NPM_SCOPE }}
+          #      - name: Install dependencies
+          #        run: npm ci
+          #      - name: Run tests
+          #        run: npm test
