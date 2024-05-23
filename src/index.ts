@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 import 'dotenv/config';
 import { natsConnection } from './services/nats.js';
 import { logger } from './services/logger.js';
