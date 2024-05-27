@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 import { connect } from 'nats';
 import server from '../config/server';
 
