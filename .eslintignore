@@ -1,7 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-
-**/__tests__
-tsconfig.json
-/build
-/node_modules
-.env
