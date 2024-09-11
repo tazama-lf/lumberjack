@@ -41,6 +41,7 @@ ENV ELASTIC_PASSWORD=
 ENV ELASTIC_SEARCH_VERSION=
 ENV ELASTIC_HOST=
 ENV FLUSHBYTES=1000
+ENV STDOUT_ENABLED=false
 
 # Set healthcheck command
 HEALTHCHECK --interval=60s CMD [ -e /tmp/.lock ] || exit 1
