@@ -1,22 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import pino from 'pino';
-import {
-  elasticHost,
-  elasticPassword,
-  elasticUsername,
-  elasticVersion,
-  flushBytes,
-} from '../config/server';
+import { elasticHost, elasticPassword, elasticUsername, elasticVersion, flushBytes } from '../config/server';
 import { createElasticStream } from '@frmscoe/frms-coe-lib/lib/helpers/logUtilities';
 
-const { ecsOpts, stream } = createElasticStream(
-  elasticHost,
-  elasticVersion,
-  elasticUsername,
-  elasticPassword,
-  flushBytes,
-);
+const { ecsOpts, stream } = createElasticStream(elasticHost, elasticVersion, elasticUsername, elasticPassword, flushBytes);
 
 stream.on('unknown', (error) => {
   console.log('unknown err', error);
@@ -31,4 +19,17 @@ stream.on('error', (error) => {
   console.log('error', error);
 });
 
-export const logger = pino({ level: 'trace', ...ecsOpts }, stream);
+const streams = [
+  {
+    level: 'trace',
+    stream: process.stdout,
+    ...ecsOpts,
+  },
+  {
+    level: 'trace',
+    stream,
+    ...ecsOpts,
+  },
+];
+
+export const logger = pino(pino.multistream(streams));
