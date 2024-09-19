@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import pino from 'pino';
+import pino, { type Logger } from 'pino';
 import { stdOut, elasticConfig } from '../config/server';
 import { createElasticStream } from '@frmscoe/frms-coe-lib/lib/helpers/logUtilities';
 
-let logger;
+let logger: Logger;
 
 // configure both logging and elastic
 if (elasticConfig) {
