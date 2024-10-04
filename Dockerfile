@@ -45,9 +45,4 @@ ENV FLUSHBYTES=1000
 ENV STDOUT=false
 ENV ELASTIC=true
 
-# Set healthcheck command
-HEALTHCHECK --interval=60s CMD [ -e /tmp/.lock ] || exit 1
-EXPOSE 4222
-
-# Execute watchdog command
 CMD ["build/index.js"]
