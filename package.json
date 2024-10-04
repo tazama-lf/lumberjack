@@ -37,10 +37,10 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@frmscoe/frms-coe-lib": "^3.1.0",
+    "@tazama-lf/frms-coe-lib": "^4.2.0-rc.3",
     "dotenv": "^16.4.5",
     "nats": "^2.26.0",
-    "pino": "^9.1.0"
+    "pino": "^9.2.0"
   },
   "lint-staged": {
     "*.{js,ts}": [

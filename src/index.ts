@@ -4,7 +4,7 @@ import 'dotenv/config';
 import { natsConnection } from './services/nats.js';
 import { logger } from './services/logger.js';
 import { subject } from './config/server.js';
-import { decodeLogBuffer } from '@frmscoe/frms-coe-lib/lib/helpers/protobuf.js';
+import { decodeLogBuffer } from '@tazama-lf/frms-coe-lib/lib/helpers/protobuf.js';
 
 (async () => {
   const nats = await natsConnection;

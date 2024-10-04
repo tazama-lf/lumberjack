@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { validateEnvVar } from '@tazama-lf/frms-coe-lib/lib/helpers/env';
 
 interface ElasticOpts {
   username: string;
@@ -9,27 +10,28 @@ interface ElasticOpts {
   index?: string;
 }
 
-export const stdOut = process.env.STDOUT === 'true';
-export const elastic = process.env.ELASTIC === 'true';
+export const stdOut = validateEnvVar('STDOUT', 'boolean', true) || false;
+
+export const elastic = validateEnvVar('ELASTIC', 'boolean', true) || false;
 
 // If none of these are enabled, Lumberjack does nothing
 if (!stdOut && !elastic) {
   throw new Error("At least one of ELASTIC or STDOUT env vars must be set to 'true'");
 }
 
-export const subject = process.env.NATS_SUBJECT ?? 'Lumberjack';
-export const server = process.env.NATS_SERVER;
+export const subject = validateEnvVar<string>('NATS_SUBJECT', 'string');
+export const server = validateEnvVar<string>('NATS_SERVER', 'string');
 
 let elasticConfig: ElasticOpts | undefined;
 
 if (elastic) {
   elasticConfig = {
-    username: process.env.ELASTIC_USERNAME ?? '',
-    password: process.env.ELASTIC_PASSWORD ?? '',
-    host: process.env.ELASTIC_HOST ?? 'http://localhost:9200',
-    version: Number(process.env.ELASTIC_SEARCH_VERSION ?? '8'),
-    flushBytes: Number(process.env.FLUSHBYTES ?? '1000'),
-    index: process.env.ELASTIC_INDEX,
+    username: validateEnvVar<string>('ELASTIC_USERNAME', 'string'),
+    password: validateEnvVar<string>('ELASTIC_PASSWORD', 'string', true),
+    host: validateEnvVar<string>('ELASTIC_HOST', 'string'),
+    version: validateEnvVar<number>('ELASTIC_SEARCH_VERSION', 'string'),
+    flushBytes: validateEnvVar<number>('FLUSHBYTES', 'number'),
+    index: validateEnvVar<string>('ELASTIC_INDEX', 'string'),
   };
 }
 
