@@ -2,7 +2,7 @@
 
 import pino, { type Logger } from 'pino';
 import { stdOut, elasticConfig } from '../config/server';
-import { createElasticStream } from '@frmscoe/frms-coe-lib/lib/helpers/logUtilities';
+import { createElasticStream } from '@tazama-lf/frms-coe-lib/lib/helpers/logUtilities';
 
 let logger: Logger;
 
