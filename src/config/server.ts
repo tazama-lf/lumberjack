@@ -1,14 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { validateEnvVar } from '@tazama-lf/frms-coe-lib/lib/helpers/env';
-
-interface ElasticOpts {
-  username: string;
-  password: string;
-  host: string;
-  version: number;
-  flushBytes: number;
-  index?: string;
-}
+import { type LogConfig, validateLogConfig } from '@tazama-lf/frms-coe-lib/lib/config/monitoring.config';
 
 export const stdOut = validateEnvVar('STDOUT', 'boolean', true) || false;
 
@@ -22,17 +14,11 @@ if (!stdOut && !elastic) {
 export const subject = validateEnvVar<string>('NATS_SUBJECT', 'string');
 export const server = validateEnvVar<string>('NATS_SERVER', 'string');
 
-let elasticConfig: ElasticOpts | undefined;
+const opts = validateLogConfig();
+let elasticConfig: Required<Pick<LogConfig, 'pinoElasticOpts'>> | undefined;
 
-if (elastic) {
-  elasticConfig = {
-    username: validateEnvVar<string>('ELASTIC_USERNAME', 'string'),
-    password: validateEnvVar<string>('ELASTIC_PASSWORD', 'string', true),
-    host: validateEnvVar<string>('ELASTIC_HOST', 'string'),
-    version: validateEnvVar<number>('ELASTIC_SEARCH_VERSION', 'string'),
-    flushBytes: validateEnvVar<number>('FLUSHBYTES', 'number'),
-    index: validateEnvVar<string>('ELASTIC_INDEX', 'string'),
-  };
+if (opts.pinoElasticOpts) {
+  elasticConfig = { pinoElasticOpts: opts.pinoElasticOpts };
 }
 
 export { elasticConfig };
