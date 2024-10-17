@@ -36,15 +36,13 @@ COPY package.json ./
 
 ENV NATS_SERVER=localhost:4222
 ENV NATS_SUBJECT=Lumberjack
+ENV ELASTIC_INDEX=logs-tazama
 ENV ELASTIC_USERNAME=
 ENV ELASTIC_PASSWORD=
 ENV ELASTIC_SEARCH_VERSION=
 ENV ELASTIC_HOST=
-ENV FLUSHBYTES=1000
+ENV ELASTIC_FLUSH_BYTES=1000
+ENV STDOUT=false
+ENV ELASTIC=true
 
-# Set healthcheck command
-HEALTHCHECK --interval=60s CMD [ -e /tmp/.lock ] || exit 1
-EXPOSE 4222
-
-# Execute watchdog command
 CMD ["build/index.js"]
