@@ -19,8 +19,8 @@ if (elasticConfig) {
     });
   }
 
-  const { host, version, username, password, flushBytes, index } = elasticConfig;
-  const { ecsOpts, stream } = createElasticStream(host, version, username, password, flushBytes, index);
+  const { elasticHost, elasticVersion, elasticUsername, elasticPassword, flushBytes, elasticIndex } = elasticConfig.pinoElasticOpts;
+  const { ecsOpts, stream } = createElasticStream(elasticHost, elasticVersion, elasticUsername, elasticPassword, flushBytes, elasticIndex);
 
   stream.on('unknown', (error) => {
     console.log('unknown err', error);
