@@ -77,3 +77,7 @@ sequenceDiagram
   - `ELASTIC_USERNAME`
   - `ELASTIC_PASSWORD`
   - `ELASTIC_INDEX`
+
+## FAQ and Troubleshooting
+
+For FAQ and troubleshooting, consult: [Troubleshooting](https://github.com/tazama-lf/docs/blob/f3f5cf07425e9785c27531511601fc61a81e51e4/Technical/Logging/Troubleshooting.md)
