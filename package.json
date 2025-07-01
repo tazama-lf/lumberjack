@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@tazama-lf/frms-coe-lib": "5.0.0",
-    "dotenv": "^16.4.5",
+    "dotenv": "^17.0.0",
     "nats": "^2.26.0",
     "pino": "^9.2.0"
   },
