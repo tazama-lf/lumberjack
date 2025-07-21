@@ -2,16 +2,16 @@
 import { type LogConfig, validateLogConfig } from '@tazama-lf/frms-coe-lib/lib/config/monitoring.config';
 import { validateEnvVar } from '@tazama-lf/frms-coe-lib/lib/config';
 
-const stdOut: boolean = validateEnvVar('STDOUT', 'boolean', true);
-const elastic: boolean = validateEnvVar('ELASTIC', 'boolean', true);
+const stdOut: boolean = validateEnvVar('STDOUT', 'boolean', true) as boolean;
+const elastic: boolean = validateEnvVar('ELASTIC', 'boolean', true) as boolean;
 
 // If none of these are enabled, Lumberjack does nothing
 if (!stdOut && !elastic) {
-  throw new Error('At least one of ELASTIC or STDOUT env vars must be set to true');
+  throw new Error("At least one of ELASTIC or STDOUT env vars must be set to 'true'");
 }
 
-const subject = validateEnvVar<string>('NATS_SUBJECT', 'string');
-const server = validateEnvVar<string>('NATS_SERVER', 'string');
+const subject = validateEnvVar('NATS_SUBJECT', 'string') as string;
+const server = validateEnvVar('NATS_SERVER', 'string') as string;
 
 const opts = validateLogConfig();
 let elasticConfig: Required<Pick<LogConfig, 'pinoElasticOpts'>> | undefined;
