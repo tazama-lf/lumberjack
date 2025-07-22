@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import pino, { type Logger } from 'pino';
-import { stdOut, elasticConfig } from '../config/server';
 import { createElasticStream } from '@tazama-lf/frms-coe-lib/lib/helpers/logUtilities';
+import * as util from 'node:util';
+import pino, { type Logger } from 'pino';
+import { elastic, elasticConfig, stdOut } from '../config/server';
 
 let logger: Logger;
 
 // configure both logging and elastic
-if (elasticConfig) {
+if (elastic && elasticConfig) {
   // holds a list of (potentially) both configurations
   const streams = [];
 
@@ -22,18 +23,20 @@ if (elasticConfig) {
   const { elasticHost, elasticVersion, elasticUsername, elasticPassword, flushBytes, elasticIndex } = elasticConfig.pinoElasticOpts;
   const { ecsOpts, stream } = createElasticStream(elasticHost, elasticVersion, elasticUsername, elasticPassword, flushBytes, elasticIndex);
 
+  /* eslint-disable no-console -- When the elastic transport fails */
   stream.on('unknown', (error) => {
-    console.log('unknown err', error);
+    console.log('unknown err', util.inspect(error));
   });
   stream.on('insertError', (error) => {
-    console.log('insert err', error);
+    console.log('insert err', util.inspect(error));
   });
   stream.on('insert', (error) => {
-    console.log('insert exc', error);
+    console.log('insert exc', util.inspect(error));
   });
   stream.on('error', (error) => {
-    console.log('error', error);
+    console.log('error', util.inspect(error));
   });
+  /* eslint-enable no-console */
 
   // register elastic
   streams.push({
@@ -52,8 +55,8 @@ if (elasticConfig) {
         target: 'pino/file',
       },
     ],
-  });
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- we ultimately get the same logger back
+  }) as Record<string, unknown>;
+
   logger = pino(transport);
 }
 
