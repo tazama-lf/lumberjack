@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import 'dotenv/config';
-import { natsConnection } from './services/nats.js';
-import { logger } from './services/logger.js';
-import { subject } from './config/server.js';
 import { decodeLogBuffer } from '@tazama-lf/frms-coe-lib/lib/helpers/protobuf.js';
+import 'dotenv/config';
+import * as util from 'node:util';
+import { subject } from './config/server.js';
+import { logger } from './services/logger.js';
+import { natsConnection } from './services/nats.js';
 
 (async () => {
   const nats = await natsConnection;
@@ -34,6 +35,7 @@ import { decodeLogBuffer } from '@tazama-lf/frms-coe-lib/lib/helpers/protobuf.js
       }
     }
   }
-})().catch((e) => {
-  console.error(e);
+})().catch((e: unknown) => {
+  // eslint-disable-next-line no-console -- When pino transports fails
+  console.error(util.inspect(e));
 });
