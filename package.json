@@ -1,6 +1,6 @@
 {
   "name": "logger-service",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "description": "",
   "type": "commonjs",
   "scripts": {
@@ -38,7 +38,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@tazama-lf/frms-coe-lib":"6.0.0-rc.13",
+    "@tazama-lf/frms-coe-lib":"6.0.0",
     "dotenv": "^17.2.0",
     "nats": "^2.29.3",
     "pino": "^9.7.0"
